@@ -22,4 +22,22 @@ public class UserService {
 	public User getUser(String cpf) {
 		return repository.findByCpf(cpf);
 	}
+	
+	@Transactional
+	public User updateUser(String cpf, User updated) {
+		User entity = repository.findByCpf(cpf);
+		updateData(entity, updated);
+		return repository.save(entity);
+	}
+	
+	private void updateData(User entity, User updated) {
+		entity.setName(updated.getName());
+		entity.setEmail(updated.getEmail());
+		entity.setBirthDate(updated.getBirthDate());
+	}
+	
+	@Transactional
+	public void deleteUser(String cpf) {
+		repository.delete(repository.findByCpf(cpf));
+	}
 }
