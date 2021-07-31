@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import br.com.training.model.User;
 
 public class UserForm implements Serializable {
@@ -20,6 +22,7 @@ public class UserForm implements Serializable {
 	private String email;
 	
 	@NotBlank
+	@CPF
 	private String cpf;
 	private LocalDate birthDate;
 	
