@@ -13,6 +13,9 @@ import javax.persistence.Id;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+import br.com.training.dto.UserForm;
+import br.com.training.dto.UserResponse;
+
 @Entity
 public class User implements Serializable {
 
@@ -33,6 +36,24 @@ public class User implements Serializable {
 
 	@Column(nullable = false)
 	private LocalDate birthDate;
+	
+	public User() {}
+	
+	public User(Long id, String name, String email, String cpf, LocalDate birthDate) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.cpf = cpf;
+		this.birthDate = birthDate;
+	}
+
+	public User(UserForm form) {
+		name = form.getName();
+		email = form.getEmail();
+		cpf = form.getCpf();
+		birthDate = form.getBirthDate();
+	}
 
 	@Component
 	public class LocalDateSpringConverter implements Converter<String, LocalDate> {
@@ -113,4 +134,7 @@ public class User implements Serializable {
 		return true;
 	}
 
+	public UserResponse toResponse() {
+		return new UserResponse(this);
+	}
 }

@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import br.com.training.model.User;
+import br.com.training.dto.UserForm;
+import br.com.training.dto.UserResponse;
 import br.com.training.service.UserService;
 
 @RestController
@@ -29,19 +30,19 @@ public class UserController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public User createUser(@RequestBody @Valid User user) {
-		return service.createUser(user);
+	public UserResponse createUser(@RequestBody @Valid UserForm form) {
+		return service.createUser(form);
 	}
 
 	@GetMapping (value = "/{cpf}")
 	@ResponseStatus(HttpStatus.OK)
-    public User getUser (@PathVariable String cpf){
+    public UserResponse getUser (@PathVariable String cpf){
         return service.getUser(cpf);
     }
 
 	@PutMapping (value = "/{cpf}")
-	public ResponseEntity<User> updateUser(@PathVariable String cpf, @RequestBody @Valid User user) {
-		return ResponseEntity.ok().body(service.updateUser(cpf, user));
+	public ResponseEntity<UserResponse> updateUser(@PathVariable String cpf, @RequestBody @Valid UserForm form) {
+		return ResponseEntity.ok().body(service.updateUser(cpf, form));
 	}
 	
 	@DeleteMapping (value = "/{cpf}")

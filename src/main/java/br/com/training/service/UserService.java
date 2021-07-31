@@ -4,36 +4,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.training.dto.UserForm;
+import br.com.training.dto.UserResponse;
 import br.com.training.model.User;
 import br.com.training.repository.UserRepository;
 
 @Service
 public class UserService {
-
+	
 	@Autowired
 	private UserRepository repository;
 	
 	@Transactional
-	public User createUser(User user) {
-		return repository.save(user);
+	public UserResponse createUser(UserForm form) {
+		return repository.save(form.toEntity()).toResponse();
 	}
 	
 	@Transactional(readOnly = true)
-	public User getUser(String cpf) {
-		return repository.findByCpf(cpf);
+	public UserResponse getUser(String cpf) {
+		return repository.findByCpf(cpf).toResponse();
 	}
 	
 	@Transactional
-	public User updateUser(String cpf, User updated) {
+	public UserResponse updateUser(String cpf, UserForm form) {
 		User entity = repository.findByCpf(cpf);
-		updateData(entity, updated);
-		return repository.save(entity);
+		updateData(entity, form);
+		return repository.save(entity).toResponse();
 	}
 	
-	private void updateData(User entity, User updated) {
-		entity.setName(updated.getName());
-		entity.setEmail(updated.getEmail());
-		entity.setBirthDate(updated.getBirthDate());
+	private void updateData(User entity, UserForm form) {
+		entity.setName(form.getName());
+		entity.setEmail(form.getEmail());
+		entity.setBirthDate(form.getBirthDate());
 	}
 	
 	@Transactional
